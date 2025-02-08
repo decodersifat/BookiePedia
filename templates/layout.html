@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    {% block title %} {% endblock %} 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Enable Tailwind's dark mode -->
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+      };
+    </script>
+  </head>
+  <body class="bg-blue-600 text-gray-600 dark:bg-gray-900 dark:text-gray-300">
+    <div class="header">
+      <!-- Navigation Bar -->
+      <nav class="bg-blue shadow-lg dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+          <div class="flex justify-between items-center py-4">
+            <!-- Logo -->
+            <a href="{% url 'book_list' %}" ><div  class="text-2xl font-bold text-white dark:text-white">BookiePedia</div></a>
+
+              <!-- Desktop Menu -->
+              <div class="hidden md:flex space-x-6">
+                <a href="{% url 'book_list' %}" class="text-white hover:text-blue-400 dark:text-gray-200 dark:hover:text-blue-400">Home</a>
+                <a href="{% url 'index' %}" class="text-white hover:text-blue-400 dark:text-gray-200 dark:hover:text-blue-400">About Us</a>
+                <a href="{% url 'index' %}" class="text-white hover:text-blue-400 dark:text-gray-200 dark:hover:text-blue-400">Contact Us</a>
+                <a href="{% url 'index' %}" class="text-white hover:text-blue-400 dark:text-gray-200 dark:hover:text-blue-400">Privacy Policy</a>
+                <a href="{% url 'index' %}" class="text-white hover:text-blue-400 dark:text-gray-200 dark:hover:text-blue-400">Terms & Conditions</a>
+
+                {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="text-white font-semibold hover:text-blue-400 dark:text-gray-200 dark:hover:text-blue-400">Profile</a>
+                <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="text-white font-semibold hover:text-red-400 dark:text-gray-200 dark:hover:text-red-400">Logout</button>
+                </form>
+              {% else %}
+                <a href="{% url 'login' %}" class="text-white font-semibold hover:text-blue-400 dark:text-gray-200 dark:hover:text-blue-400">Login</a>
+              {% endif %}
+              </div>
+                                          <!-- Dark Mode Toggle -->
+            <button id="dark-mode-toggle" class="ml-4 bg-gray-700 text-white px-3 py-2 rounded-md dark:bg-gray-600">
+              🌙
+            </button>
+
+            <!-- Mobile Menu Button -->
+            <button id="menu-btn" class="md:hidden focus:outline-none">
+              <svg class="w-6 h-6 text-gray-700 dark:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-blue dark:bg-gray-700">
+          <a href="{% url 'book_list' %}" class="block px-4 py-2 text-white hover:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-600">Home</a>
+          <a href="{% url 'index' %}" class="block px-4 py-2 text-white hover:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-600">About Us</a>
+          <a href="{% url 'index' %}" class="block px-4 py-2 text-white hover:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-600">Contact Us</a>
+          <a href="{% url 'index' %}" class="block px-4 py-2 text-white hover:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-600">Privacy Policy</a>
+          <a href="{% url 'index' %}" class="block px-4 py-2 text-white hover:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-600">Terms & Conditions</a>
+
+          <form method="post" action="{% url 'logout' %}" style="display: block; padding: 0;">
+            {% csrf_token %}
+            <button type="submit" class="block px-4 py-2 text-white font-semibold hover:bg-gray-600 dark:text-gray-200 dark:hover:text-red-400 w-full text-left">
+                Logout
+            </button>
+        </form>
+        </div>
+
+      </nav>
+    </div>
+
+    <div>
+      {% block content %} {% endblock %}
+    </div>
+
+    <script>
+      const menuBtn = document.getElementById("menu-btn");
+      const mobileMenu = document.getElementById("mobile-menu");
+      const darkModeToggle = document.getElementById("dark-mode-toggle");
+
+ 
+      menuBtn.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+      });
+
+    
+      darkModeToggle.addEventListener("click", () => {
+        const isDarkMode = document.documentElement.classList.toggle("dark");
+        localStorage.setItem("darkMode", isDarkMode ? "enabled" : "disabled");
+
+
+        darkModeToggle.textContent = isDarkMode ? "☀️" : "🌙";
+      });
+
+
+      if (localStorage.getItem("darkMode") === "enabled") {
+        document.documentElement.classList.add("dark");
+        darkModeToggle.textContent = "☀️";
+      } else {
+        document.documentElement.classList.remove("dark");
+        darkModeToggle.textContent = "🌙";
+      }
+    </script>
+  </body>
+</html>
