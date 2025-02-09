@@ -5,7 +5,7 @@ from cloudinary.models import CloudinaryField
 class Books(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=150)
-    text = models.TextField(max_length=300)
+    text = models.TextField(max_length=10000)
     photo = CloudinaryField('photos/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
