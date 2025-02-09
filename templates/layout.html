@@ -62,12 +62,22 @@
           <a href="{% url 'index' %}" class="block px-4 py-2 text-white hover:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-600">Privacy Policy</a>
           <a href="{% url 'index' %}" class="block px-4 py-2 text-white hover:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-600">Terms & Conditions</a>
 
-          <form method="post" action="{% url 'logout' %}" style="display: block; padding: 0;">
+           {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="block px-4 py-2 text-white font-semibold hover:bg-gray-600 dark:text-gray-200 dark:hover:text-red-400 w-full text-left">Profile</a>
+                <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="block px-4 py-2 text-white font-semibold hover:bg-gray-600 dark:text-gray-200 dark:hover:text-red-400 w-full text-left">Logout</button>
+                </form>
+              {% else %}
+                <a href="{% url 'login' %}" class="block px-4 py-2 text-white font-semibold hover:bg-gray-600 dark:text-gray-200 dark:hover:text-red-400 w-full text-left">Login</a>
+           {% endif %}
+
+<!--           <form method="post" action="{% url 'logout' %}" style="display: block; padding: 0;">
             {% csrf_token %}
             <button type="submit" class="block px-4 py-2 text-white font-semibold hover:bg-gray-600 dark:text-gray-200 dark:hover:text-red-400 w-full text-left">
                 Logout
             </button>
-        </form>
+        </form> -->
         </div>
 
       </nav>
